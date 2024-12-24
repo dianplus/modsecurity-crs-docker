@@ -26,7 +26,6 @@ The stable tag format is `<CRS version>-<web server>[-<os>]-<date>`.
 Examples:
    * `4-nginx-202401121309`
    * `4.0-apache-alpine-202401121309`
-   * `4.0.0-openresty-alpine-fat-202401121309`
 
 ### Rolling Tags
 
@@ -40,22 +39,19 @@ The stable tag format is `<web server>[-<os>]`.
 Examples:
    * `nginx`
    * `apache-alpine`
-   * `openresty-alpine-fat`
 
 ## OS Variants
 
 * nginx – *latest stable ModSecurity v3 on Nginx 1.27.3 official stable base image, and latest stable OWASP CRS 4.9.0*
    * [nginx](https://github.com/coreruleset/modsecurity-crs-docker/blob/master/nginx/Dockerfile)
    * [nginx-alpine](https://github.com/coreruleset/modsecurity-crs-docker/blob/master/nginx/Dockerfile-alpine)
-* Openresty - *last stable ModSecurity v3 on OpenResty 1.25.3.1 official stable base image, and latest stable OWASP CRS 4.9.0*
-   * [openresty-alpine-fat](https://github.com/coreruleset/modsecurity-crs-docker/blob/master/openresty/Dockerfile-alpine)
 * Apache httpd – *last stable ModSecurity v2 on Apache 2.4.62 official stable base image, and latest stable OWASP CRS 4.9.0*
    * [apache](https://github.com/coreruleset/modsecurity-crs-docker/blob/master/apache/Dockerfile)
    * [apache-alpine](https://github.com/coreruleset/modsecurity-crs-docker/blob/master/apache/Dockerfile-alpine)
 
 ### Notes regarding Openresty version of this image
 
-We currently only provide a version of the Openresty image based on **Alpine Linux**. The Dockerfile for Openresty resides in the [docker-openresty repository](https://github.com/openresty/docker-openresty/blob/master/alpine/Dockerfile.fat).
+* The version was removed as no maintainer was found.
 
 ## Supported architectures
 
@@ -159,16 +155,16 @@ These variables are common to image variants and will set defaults based on the 
 | METRICS_ALLOW_FROM | A single range of IP adresses that can access the metrics | `127.0.0.0/255.0.0.0 ::1/128` | `127.0.0.0/24` |
 | METRICS_DENY_FROM | A range of IP adresses that cannot access the metrics | `All` | `all` |
 | METRICSLOG | Location of metrics log file | `/dev/null` | - |
-| PROXY_SSL_CERT | A string indicating the path to the PEM-encoded X.509 certificate data file or token identifier of the proxied server | `/usr/local/apache2/conf/proxy.crt` | `/etc/nginx/conf/proxy.crt` / `/usr/local/openresty/nginx/conf/proxy.crt` |
-| PROXY_SSL_CERT_KEY | A string indicating the path to the PEM-encoded private key file of the proxied server | `/usr/local/apache2/conf/proxy.key` | `/etc/nginx/conf/proxy.key` / `/usr/local/openresty/nginx/conf/proxy.key` |
+| PROXY_SSL_CERT | A string indicating the path to the PEM-encoded X.509 certificate data file or token identifier of the proxied server | `/usr/local/apache2/conf/proxy.crt` | `/etc/nginx/conf/proxy.crt` |
+| PROXY_SSL_CERT_KEY | A string indicating the path to the PEM-encoded private key file of the proxied server | `/usr/local/apache2/conf/proxy.key` | `/etc/nginx/conf/proxy.key` |
 | PROXY_SSL_CIPHERS| A string indicating the cipher suite to connect to the backend via TLS | `"ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"` | - |
 | PROXY_SSL_PROTOCOLS | TLS protocols to enable for the connection to the backend | `"all -SSLv3 -TLSv1 -TLSv1.1"` | `TTLSv1.2 TLSv1.3` |
 | PROXY_SSL  | SSL Proxy Engine Operation Switch | `off` | - |
 | PROXY_SSL_VERIFY | A string value indicating the type of proxy server Certificate verification | `none` | `off` |
 | PROXY_TIMEOUT  | Number of seconds for proxied requests to time out | `60` | `60s` |
 | SERVER_NAME | The server name | `localhost` | - |
-| SSL_CERT | A string indicating the path to the PEM-encoded X.509 certificate data file or token identifier of the proxied server | `/usr/local/apache2/conf/server.crt` | `/etc/nginx/conf/server.crt` / `/usr/local/openresty/nginx/conf/server.crt` |
-| SSL_CERT_KEY | A string indicating the path to the PEM-encoded private key file of the proxied server | `/usr/local/apache2/conf/server.key` | `/etc/nginx/conf/server.key` / `/usr/local/openresty/nginx/conf/server.key` |
+| SSL_CERT | A string indicating the path to the PEM-encoded X.509 certificate data file or token identifier of the proxied server | `/usr/local/apache2/conf/server.crt` | `/etc/nginx/conf/server.crt` |
+| SSL_CERT_KEY | A string indicating the path to the PEM-encoded private key file of the proxied server | `/usr/local/apache2/conf/server.key` | `/etc/nginx/conf/server.key` |
 | SSL_CIPHERS| A string indicating the cipher suite for incoming TLS connections | `"ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"` | - |
 | SSL_OCSP_STAPLING | Enable / disable OCSP stapling | `On` | `on` |
 | SSL_PROTOCOLS | TLS protocols to enable for the connection to the backend | `"all -SSLv3 -TLSv1 -TLSv1.1"` | `TTLSv1.2 TLSv1.3` |
@@ -289,7 +285,7 @@ All these variables impact in configuration directives in the modsecurity engine
 | ANOMALY_OUTBOUND | An integer indicating the outbound_anomaly_score_threshold (Default: `4`) |
 | ARG_LENGTH | An integer indicating the arg_length (Default: `unlimited`) |
 | ARG_NAME_LENGTH | An integer indicating the arg_name_length (Default: `unlimited`) |
-| BLOCKING_PARANOIA | (:new: Replaces `PARANOIA` in CRSv4) An integer indicating the paranoia level (Default: `1`)               |
+| BLOCKING_PARANOIA | (:new: Replaces `PARANOIA` in CRSv4) An integer indicating the paranoia level (Default: `1`) |
 | COMBINED_FILE_SIZES | An integer indicating the combined_file_sizes (Default: `unlimited`) |
 | CRS_DISABLE_PLUGINS | A boolean indicating whether plugins will be **disabled** (Only from v4 and up. Default: `0`) |
 | CRS_ENABLE_TEST_MARKER | A boolean indicating whether to write test markers to the log file (Used for running the CRS test suite. Default: `0`) |
@@ -299,7 +295,8 @@ All these variables impact in configuration directives in the modsecurity engine
 | MANUAL_MODE | A boolean indicating that you are providing your own `crs-setup.conf` file mounted as volume. (Default: `0`). ⚠️ None of the following variables are used if you set it to `1`. |
 | MAX_FILE_SIZE | An integer indicating the max_file_size (Default: `unlimited`) |
 | MAX_NUM_ARGS | An integer indicating the max_num_args (Default: `unlimited`) |
-| PARANOIA | An integer indicating the paranoia level (Default: `1`)               |
+| PARANOIA | An integer from `1` through `4`, indicating the paranoia level (Default: `1`) |
+| REPORTING_LEVEL | An integer from `0` through `5`, indicating the level of verbosity when reporting anomaly scores. See [rule 900115](https://github.com/coreruleset/coreruleset/blob/1a8f408ea730c7447e0dbb009ac3cef88368f74e/crs-setup.conf.example#L349) for details. (Default: `4`) |
 | RESTRICTED_EXTENSIONS | A string indicating the restricted_extensions (Default: `.asa/ .asax/ .ascx/ .axd/ .backup/ .bak/ .bat/ .cdx/ .cer/ .cfg/ .cmd/ .com/ .config/ .conf/ .cs/ .csproj/ .csr/ .dat/ .db/ .dbf/ .dll/ .dos/ .htr/ .htw/ .ida/ .idc/ .idq/ .inc/ .ini/ .key/ .licx/ .lnk/ .log/ .mdb/ .old/ .pass/ .pdb/ .pol/ .printer/ .pwd/ .rdb/ .resources/ .resx/ .sql/ .swp/ .sys/ .vb/ .vbs/ .vbproj/ .vsdisco/ .webinfo/ .xsd/ .xsx/`) |
 | RESTRICTED_HEADERS_BASIC | A string indicating the restricted_headers_basic (Default: `/content-encoding/ /proxy/ /lock-token/ /content-range/ /if/ /x-http-method-override/ /x-http-method/ /x-method-override/`) |
 | RESTRICTED_HEADERS_EXTENDED | A string indicating the restricted_headers_extended (Default: `/accept-charset/`) |
