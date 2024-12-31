@@ -26,7 +26,7 @@ variable "httpd-version" {
 
 variable "openresty-version" {
     # renovate: depName=openresty/openresty datasource=docker
-    default = "1.25.3.1"
+    default = "1.25.3.2"
 }
 
 variable "lua-version" {
